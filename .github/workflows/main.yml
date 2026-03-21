@@ -13,6 +13,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -39,8 +42,8 @@ jobs:
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       # Runs a single command using the runners shell
       - name: Build and push Docker images to docker.io and ghcr.io
@@ -51,5 +54,5 @@ jobs:
           context: ./
           push: true
           tags: |
-            yangchuansheng/ip_derper:latest
-            ghcr.io/yangchuansheng/ip_derper:latest
+            iparanoid/ip_derper:latest
+            ghcr.io/iparanoid/ip_derper:latest
